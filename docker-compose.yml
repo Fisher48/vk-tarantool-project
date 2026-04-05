@@ -1,0 +1,22 @@
+services:
+  tarantool:
+    image: tarantool/tarantool:3.2.0
+    container_name: tarantool
+    ports:
+      - "3301:3301"
+    volumes:
+      - ./init.lua:/opt/tarantool/init.lua
+      - tarantool_data:/var/lib/tarantool
+    environment:
+      - TARANTOOL_MEMTX_MEMORY=4294967296
+    command: tarantool /opt/tarantool/init.lua
+    restart: unless-stopped
+    networks:
+      - tarantool-network
+
+volumes:
+  tarantool_data:
+
+networks:
+  tarantool-network:
+    driver: bridge
